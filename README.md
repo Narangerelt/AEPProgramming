@@ -1,11 +1,11 @@
 # AEPProgramming
 First steps to program on AEP
 ### Basics and clearing process
-1) Check device size
+1) Check device size:
 ```
 # fdisk -l
 ```
-2) Check filesystem use
+2) Check filesystem use:
 ```
 # df -Th
 ```
@@ -19,13 +19,13 @@ First steps to program on AEP
 # ndctl list -DRN
 ```
 - **Disabling and destroying existing namespaces** 
-1) Make sure to disable the namespace before destroying it
+1) Make sure to disable the namespace before destroying it.
 ```
 # ndctl disable-namespace <namespaceX.Y>
 - or -
 # ndctl disable-namespace all
 ```
-2) Destroy namespaces
+2) Destroy namespaces:
 ```
 # ndctl destroy-namespace <namespaceX.Y>
 - or -
@@ -38,33 +38,33 @@ First steps to program on AEP
 ```
 # umount <file system mount point>
 ```
-2) If filesystems cannot be unmount because they are busy, kill all the processes inside of it
+2) If filesystems cannot be unmount because they are busy, kill all the processes inside of it.
 ```
 # fuser -k <filesystem mount pount>
 ```
 ### Work on Non-Interleaved NVDIMMs, each with their own Region and Namespace
-- **Create non-interleaved NVDIMM devices. 
+- **Create non-interleaved NVDIMM devices:**
 ```
 # ipmctl create -goal MemoryMode=0 PersistentMemoryType=AppDirectNotInterleaved
 # reboot
 ```
-1) Find dimms residing in one socket
+1) Find dimms residing in one socket:
 ```
 # ndctl list -D -U <socket number>
 ```
-2) Creating a new NVDIMM namespace in file system DAX mode on the desired region
+2) Create a new NVDIMM namespace in file system DAX mode on the desired region:
 ```
 # ndctl create-namespace --mode=fsdax --region=<region number>
 ```
 See following link to see different options to create namespaces:
 https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/managing_storage_devices/using-nvdimm-persistent-memory-storage_managing-storage-devices#reconfiguring-an-existing-nvdimm-namespace-to-sector-mode_creating-a-sector-namespace-on-an-nvdimm-to-act-as-a-block-device
 
-- **Mount filesystems for each dimms:
-1) Create ext4 or xfs file system for /dev/pmem#
+- **Mount filesystems for each dimms:**
+1) Create ext4 or xfs file system for /dev/pmem#:
 ```
 # mkfs.ext4 /dev/pmem#
 ```
-1) Create ext4 or xfs file system for /dev/pmem#
+1) Create ext4 or xfs file system for /dev/pmem#:
 ```
 # mkfs.ext4 /dev/pmem#
 ```
@@ -72,17 +72,17 @@ https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/ma
 ```
 # mkdir –p /mnt/mem0
 ```
-3) Mount your devices
+3) Mount your devices:
 ```
 # mount –t ext4 –o dax /dev/pmem0 /mnt/mem0
 ```
-3) Check whether your filesystems are correctly mounted
+3) Check whether your filesystems are correctly mounted:
 ```
 # lsblk
 -or
 # lsblk -fi
 ```
-- **Create files on each dimms:
+- **Create files on each dimms:**
 ```
 # touch /mnt/mem1/file.txt
 ```

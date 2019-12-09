@@ -74,7 +74,7 @@ https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/ma
 ```
 3) Mount your devices:
 ```
-# mount –t ext4 –o dax /dev/pmem0 /mnt/mem0
+# mount –t ext4 –o dax /dev/pmem0 /mnt/mem0/
 ```
 3) Check whether your filesystems are correctly mounted:
 ```
